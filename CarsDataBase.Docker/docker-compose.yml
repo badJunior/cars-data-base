@@ -1,0 +1,36 @@
+services:
+  backend:
+    image: cars-data-base_backend
+    build:
+      context:  ..\CarsDateBase.Backend
+      dockerfile: CarsDataBase/Dockerfile
+    ports:
+      - "8080:80"
+
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: cars # Sets the default database name
+      POSTGRES_USER: postgres # Sets the default user for the database
+      POSTGRES_PASSWORD: postgres # Sets the password for the default user
+    ports:
+      - "5432:5432"    
+    volumes:
+      - cars-postgres:/var/lib/postgresql/18/docker
+      
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    ports:
+      - "8081:80"  # Access pgAdmin on http://localhost:8080
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_LISTEN_PORT: 80
+    volumes:
+      - cars-pgadmin:/var/lib/pgadmin
+
+
+volumes:
+  cars-pgadmin:
+  cars-postgres:

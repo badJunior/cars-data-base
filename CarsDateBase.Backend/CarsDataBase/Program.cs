@@ -1,16 +1,14 @@
-using CarsDateBase;
-using CarsDateBase.CarsDateBase.Application;
-using CarsDateBase.CarsDateBase.Application.Contracts.Repositories;
+using CarsDataBase.Application.DAL;
+using CarsDataBase.Application.DAL.Repositories;
+using CarsDataBase.Application.Services;
 using CarsDateBase.CarsDateBase.Host;
-using CarsDateBase.CarsDateBase.Logic;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<CarsDataBaseDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("Postgres")));
 
 
 builder.Services.AddScoped<IDealersRepository, DealersRepository>();
@@ -25,14 +23,16 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 
-if (app.Environment.IsDevelopment())
-{
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+
 
 
 app.RegisterDealersRoutes();
 app.RegisterCarsRoutes();
-
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<CarsDataBaseDbContext>();
+    dbContext.Database.Migrate(); 
+}
 app.Run();
