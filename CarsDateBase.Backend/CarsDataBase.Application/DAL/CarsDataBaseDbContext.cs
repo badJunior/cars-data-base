@@ -12,7 +12,7 @@ namespace CarsDataBase.Application.DAL
     {
         public DbSet<Car> Cars { get; set; }
         public DbSet<Dealer> Dealers { get; set; }
-
+        public DbSet<SelledCar> SelledCars { get; set; }
         public CarsDataBaseDbContext(DbContextOptions<CarsDataBaseDbContext> options):base(options) { }
     }
 }

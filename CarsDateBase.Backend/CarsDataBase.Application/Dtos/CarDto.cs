@@ -7,9 +7,8 @@
     int Year,
     int Power,
     string? Color,
-    int Price,
-    int DealerId,
-    string? DealerName
+    decimal Price
+    
 );
 
 }

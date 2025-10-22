@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CarsDataBase.Application.DAL.Migrations
 {
     [DbContext(typeof(CarsDataBaseDbContext))]
-    [Migration("20251006161710_Init")]
+    [Migration("20251022160504_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -36,9 +36,6 @@ namespace CarsDataBase.Application.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("DealerId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Firm")
                         .IsRequired()
                         .HasColumnType("text");
@@ -50,15 +47,13 @@ namespace CarsDataBase.Application.DAL.Migrations
                     b.Property<int>("Power")
                         .HasColumnType("integer");
 
-                    b.Property<int>("Price")
-                        .HasColumnType("integer");
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric");
 
                     b.Property<int>("Year")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DealerId");
 
                     b.ToTable("Cars");
                 });
@@ -95,20 +90,46 @@ namespace CarsDataBase.Application.DAL.Migrations
                     b.ToTable("Dealers");
                 });
 
-            modelBuilder.Entity("CarsDataBase.Logic.Car", b =>
+            modelBuilder.Entity("CarsDataBase.Logic.SelledCar", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CarId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("DealerId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CarId");
+
+                    b.HasIndex("DealerId");
+
+                    b.ToTable("SelledCars");
+                });
+
+            modelBuilder.Entity("CarsDataBase.Logic.SelledCar", b =>
+                {
+                    b.HasOne("CarsDataBase.Logic.Car", "Car")
+                        .WithMany()
+                        .HasForeignKey("CarId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("CarsDataBase.Logic.Dealer", "Dealer")
-                        .WithMany("Cars")
+                        .WithMany()
                         .HasForeignKey("DealerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Dealer");
-                });
+                    b.Navigation("Car");
 
-            modelBuilder.Entity("CarsDataBase.Logic.Dealer", b =>
-                {
-                    b.Navigation("Cars");
+                    b.Navigation("Dealer");
                 });
 #pragma warning restore 612, 618
         }

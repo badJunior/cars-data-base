@@ -19,4 +19,13 @@
     <ProjectReference Include="..\CarsDataBase.Logic\CarsDataBase.Logic.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="DAL\Seed\cars.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="DAL\Seed\dealers.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

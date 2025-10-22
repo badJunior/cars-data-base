@@ -6,8 +6,8 @@
       string? City,
       string? Address,
       string? Area,
-      double Rating,
-      List<CarDto>? Cars
+      double Rating
+
   );
 
 }
