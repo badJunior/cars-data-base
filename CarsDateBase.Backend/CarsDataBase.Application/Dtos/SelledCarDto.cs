@@ -6,6 +6,6 @@ using System.Threading.Tasks;
 
 namespace CarsDataBase.Application.Dtos
 {
-    public record SelledCarDto(CarDto Car, DealerDto Dealer);
+    public record SelledCarDto(int Id, CarDto Car, DealerDto Dealer);
    
 }

@@ -44,6 +44,7 @@ namespace CarsDataBase.Application.Services
         {
             var selledCars = await _context.SelledCars.Include(s=>s.Car).Include(s=>s.Dealer).ToArrayAsync();
             return selledCars.Select(sc => {
+                var id = sc.Id;
                 var carDto= new CarDto(
                     sc.Car.Id,
                     sc.Car.Firm,
@@ -61,7 +62,7 @@ namespace CarsDataBase.Application.Services
                     sc.Dealer.Area,
                     sc.Dealer.Rating
                     );
-                return new SelledCarDto(carDto,dealerDto);
+                return new SelledCarDto(id,carDto,dealerDto);
             }).ToArray();
         }
     }

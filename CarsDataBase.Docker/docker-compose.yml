@@ -30,6 +30,16 @@ services:
     volumes:
       - cars-pgadmin:/var/lib/pgadmin
 
+  frontend:
+    image: cars-data-base_frontend
+
+    build:
+      context: ../CarsDataBase.Frontend
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "80:80"
+
 
 volumes:
   cars-pgadmin:

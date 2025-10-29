@@ -38,7 +38,7 @@ builder.Services.AddDbContext<CarsDataBaseDbContext>(options =>
 
     })
 );
-
+builder.Services.AddCors((options) =>  options.AddDefaultPolicy((builder) =>  builder.WithOrigins(["http://localhost:8080", "http://localhost:80", "http://localhost:5173"]).AllowAnyHeader().AllowAnyMethod()));
 
 
 builder.Services.AddScoped<ISelledCarsService, SelledCarsService>();
@@ -49,7 +49,7 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-
+app.UseCors();
 app.UseSwagger();
 app.UseSwaggerUI();
 
