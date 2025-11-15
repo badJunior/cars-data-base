@@ -21,7 +21,17 @@ namespace CarsDateBase.CarsDateBase.Host
                 await service.GenerateSelledCars(request.CarsCount);
                 return Results.Ok();
             });
+
+            group.MapGet("{id}", async (int id,ISelledCarsService service) =>
+            {
+                var selledCar = await service.GetSelledCarById(id);
+                if (selledCar != null)
+                    return Results.Ok(new GetSelledCarByIdResponse(selledCar));
+                else return Results.NotFound();
+
+            });
         }
+
 
         public static void RegisterFiltersRoutes(this WebApplication app)
         {
@@ -60,4 +70,6 @@ namespace CarsDateBase.CarsDateBase.Host
     public record SelectedFilterDto(string? Color, string? Dealer, string? Make, string? Model);
 
     public record GetFilteredCarsResponse(SelledCarDto[] FilteredCars);
+
+    public record GetSelledCarByIdResponse(SelledCarDto SelledCar);
 }

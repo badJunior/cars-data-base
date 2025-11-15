@@ -90,6 +90,35 @@ namespace CarsDataBase.Application.Services
             return dto;
         }
 
+        public async Task<SelledCarDto?> GetSelledCarById(int id)
+        {
+            var selledCar = await _context.SelledCars.Include(s => s.Car).Include(s => s.Dealer).FirstOrDefaultAsync(s => s.Id == id);
+            if (selledCar == null)
+            {
+                return  null;
+            }
+            return new SelledCarDto(
+                selledCar.Id,
+                new CarDto(
+                    selledCar.Car.Id,
+                    selledCar.Car.Firm,
+                    selledCar.Car.Model,
+                    selledCar.Car.Year,
+                    selledCar.Car.Power,
+                    selledCar.Car.Color,
+                    selledCar.Car.Price
+                    ),
+                new DealerDto(
+                    selledCar.Dealer.Id,
+                    selledCar.Dealer.Name,
+                    selledCar.Dealer.City,
+                    selledCar.Dealer.Address,
+                    selledCar.Dealer.Area,
+                    selledCar.Dealer.Rating
+                    )
+                );
+        }
+
         public async Task<SelledCarDto[]> GetSelledCars()
         {
             var selledCars = await _context.SelledCars.Include(s=>s.Car).Include(s=>s.Dealer).ToArrayAsync();

@@ -13,5 +13,6 @@ namespace CarsDataBase.Application.Services
         Task<SelledCarDto[]> GetSelledCars();
         Task<FiltersDataDto> GetFilters();
         Task<SelledCarDto[]> GetFilteredSelledCars(SelectedFilterDto selectedFilter);
+        Task<SelledCarDto?> GetSelledCarById(int id);
     }
 }

@@ -5,6 +5,7 @@ import { BrowserRouter } from "react-router";
 import { Routes } from "react-router";
 import { Route } from "react-router";
 import GenerateCarsPage from "./generateCarsPage";
+import SelledCarPage from "./selledCarPage";
 const queryClient = new QueryClient();
 function App() {
   return (
@@ -17,6 +18,10 @@ function App() {
               <Routes>
                 <Route path="/" element={<SellingCarsList />} />
                 <Route path="/generate" element={<GenerateCarsPage />} />
+                <Route
+                  path="/selled-cars/:carId"
+                  element={<SelledCarPage />}
+                ></Route>
               </Routes>
             </div>
           </div>

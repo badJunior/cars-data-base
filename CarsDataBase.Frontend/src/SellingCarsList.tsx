@@ -7,6 +7,7 @@ import Filter, {
   type SelectedFilter,
 } from "./components/filter";
 import SecondButton from "./components/secondButton";
+import { Link } from "react-router";
 
 export default function SellingCarsList() {
   const filterDataQuery = useQuery({
@@ -66,12 +67,19 @@ export default function SellingCarsList() {
       </div>
       <div className="flex flex-col bg-[#1a191e] text-gray-200 px-6 py-4 ">
         <span className="text-2xl">Results</span>
-        <div className="grid grid-cols-3 p-1 bg-[#1a191e] border border-gray-700 rounded-xl">
+        <div className="grid grid-cols-4 p-1 bg-[#1a191e] border border-gray-700 rounded-xl">
           {query.data?.filteredCars.map((selledCar) => (
             <React.Fragment key={selledCar.id}>
               <span className="text-gray-200">{selledCar.car.model}</span>
               <span className="text-gray-200">{selledCar.dealer.name}</span>
               <span className="text-gray-200">{selledCar.car.price}</span>
+              <Link
+                className="px-4 py-2 rounded-md bg-[#1a191e] text-white text-sm font-medium hover:bg-gray-700 "
+                key={selledCar.id}
+                to={`/selled-cars/${selledCar.id}`}
+              >
+                card
+              </Link>
             </React.Fragment>
           ))}
         </div>
