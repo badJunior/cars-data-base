@@ -12,10 +12,6 @@ export default function Header() {
           caption="Generate listings"
           onClick={() => console.log("Generate clicked")}
         />
-        <Button
-          caption="Browse inventory"
-          onClick={() => console.log("Browse clicked")}
-        />
       </nav>
     </header>
   );

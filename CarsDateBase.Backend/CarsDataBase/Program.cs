@@ -56,6 +56,7 @@ app.UseSwaggerUI();
 
 
 app.RegisterSelledCarsRoutes();
+app.RegisterFiltersRoutes();
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<CarsDataBaseDbContext>();

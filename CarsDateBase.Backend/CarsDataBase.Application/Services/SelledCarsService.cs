@@ -40,6 +40,16 @@ namespace CarsDataBase.Application.Services
          await  _context.SaveChangesAsync();
         }
 
+        public async Task<FiltersDataDto> GetFilters()
+        {
+            var makes = await _context.Cars.Select(c => c.Firm).Distinct().ToArrayAsync();
+            var models = await _context.Cars.Select(c => c.Model).Distinct().ToArrayAsync();
+            var colors = await _context.Cars.Select(c => c.Color).Distinct().ToArrayAsync();
+            var dealers = await _context.Dealers.Select(d => d.Name).Distinct().ToArrayAsync();
+            var dto = new FiltersDataDto(makes, models, colors, dealers);
+            return dto;
+        }
+
         public async Task<SelledCarDto[]> GetSelledCars()
         {
             var selledCars = await _context.SelledCars.Include(s=>s.Car).Include(s=>s.Dealer).ToArrayAsync();

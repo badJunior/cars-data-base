@@ -23,9 +23,21 @@ namespace CarsDateBase.CarsDateBase.Host
             });
         }
 
+        public static void RegisterFiltersRoutes(this WebApplication app)
+        {
+            var group = app.MapGroup("/filters");
+            group.MapGet("", async (ISelledCarsService service) =>
+            {
+                var filtersData = await service.GetFilters();
+                return Results.Ok(new GetFiltersResponse(filtersData.Makes,filtersData.Models, filtersData.Colors, filtersData.Dealers));
 
+            });
+            
+        }
     }
 
+
+    public record GetFiltersResponse(string[] Makes, string[] Models, string[] Colors, string[] Dealers);
     public record GetSelledCarsResponse(SelledCarDto[] SelledCars); 
 
     public record GenerateSelledCarsRequest(int CarsCount);

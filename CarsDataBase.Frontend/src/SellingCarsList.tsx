@@ -1,11 +1,20 @@
 import { useQuery } from "@tanstack/react-query";
 import { httpClient } from "./utils";
-import React from "react";
+import React, { useState } from "react";
 import Button from "./components/button";
-import Input from "./components/input";
+import Filter, {
+  type FilterData,
+  type SelectedFilter,
+} from "./components/filter";
 import SecondButton from "./components/secondButton";
 
 export default function SellingCarsList() {
+  const filterDataQuery = useQuery({
+    queryKey: ["filters"],
+    queryFn: getFilters,
+  });
+
+  const [filter, setFilter] = useState(defaultFilter);
   const query = useQuery({
     queryKey: ["selling-cars"],
     queryFn: getSellingCars,
@@ -34,10 +43,25 @@ export default function SellingCarsList() {
           <span className="text-xl">Filters</span>
           <span>Adjust the criteria to find the right vehicles</span>
         </div>
-        <Input />
+        <Filter
+          filterData={
+            filterDataQuery.data ?? {
+              makes: [],
+              dealers: [],
+              models: [],
+              colors: [],
+            }
+          }
+          selectedFilter={filter}
+          onSelectedFilterChanged={(newFilter) => {
+            console.log(JSON.stringify(newFilter));
+            setFilter(newFilter);
+          }}
+        />
+
         <SecondButton
           caption="Reset filters"
-          onClick={() => console.log("Reset filters")}
+          onClick={() => setFilter(defaultFilter)}
         />
       </div>
       <div className="flex flex-col bg-[#1a191e] text-gray-200 px-6 py-4 ">
@@ -62,6 +86,12 @@ async function getSellingCars() {
   return sellingCars;
 }
 
+async function getFilters() {
+  const result = await httpClient.get<GetFilterDataResponse>("/filters");
+  const filterData: GetFilterDataResponse = await result.data;
+  return filterData;
+}
+
 type GetSellingCarsResponse = { selledCars: SellingCar[] };
 
 type SellingCar = { id: number; car: Car; dealer: Dealer };
@@ -83,4 +113,22 @@ type Dealer = {
   address: string;
   area: string;
   rating: number;
+};
+
+const defaultFilter: SelectedFilter = {
+  make: undefined,
+  model: undefined,
+  color: undefined,
+  dealer: undefined,
+  minPrice: undefined,
+  maxPrice: undefined,
+  minYear: undefined,
+  maxYear: undefined,
+};
+
+type GetFilterDataResponse = {
+  makes: string[];
+  models: string[];
+  colors: string[];
+  dealers: string[];
 };
