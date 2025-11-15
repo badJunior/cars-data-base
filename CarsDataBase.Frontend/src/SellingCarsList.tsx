@@ -16,11 +16,11 @@ export default function SellingCarsList() {
 
   const [filter, setFilter] = useState(defaultFilter);
   const query = useQuery({
-    queryKey: ["selling-cars"],
-    queryFn: getSellingCars,
+    queryKey: ["selling-cars", filter],
+    queryFn: async () => await getSellingCars(filter),
   });
   return (
-    <div className="bg-[#1a191e]">
+    <div className="bg-[#1a191e] h-full">
       <div className="grid grid-cols-[1fr] bg-[#1a191e] text-gray-200 px-6 py-4 ">
         <div className="flex items-center justify-between">
           <div>
@@ -67,7 +67,7 @@ export default function SellingCarsList() {
       <div className="flex flex-col bg-[#1a191e] text-gray-200 px-6 py-4 ">
         <span className="text-2xl">Results</span>
         <div className="grid grid-cols-3 p-1 bg-[#1a191e] border border-gray-700 rounded-xl">
-          {query.data?.selledCars.map((selledCar) => (
+          {query.data?.filteredCars.map((selledCar) => (
             <React.Fragment key={selledCar.id}>
               <span className="text-gray-200">{selledCar.car.model}</span>
               <span className="text-gray-200">{selledCar.dealer.name}</span>
@@ -80,9 +80,14 @@ export default function SellingCarsList() {
   );
 }
 
-async function getSellingCars() {
-  const result = await httpClient.get<GetSellingCarsResponse>("/selled-cars");
-  const sellingCars: GetSellingCarsResponse = await result.data;
+async function getSellingCars(filter: SelectedFilter) {
+  const result = await httpClient.post<GetSellingFilteredCarsResponse>(
+    "/filtered-selled-cars",
+    {
+      selectedFilter: filter,
+    }
+  );
+  const sellingCars: GetSellingFilteredCarsResponse = await result.data;
   return sellingCars;
 }
 
@@ -93,6 +98,8 @@ async function getFilters() {
 }
 
 type GetSellingCarsResponse = { selledCars: SellingCar[] };
+
+type GetSellingFilteredCarsResponse = { filteredCars: SellingCar[] };
 
 type SellingCar = { id: number; car: Car; dealer: Dealer };
 

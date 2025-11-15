@@ -54,7 +54,7 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 
-
+app.RegisterFilteredSelledCarsRoutes();
 app.RegisterSelledCarsRoutes();
 app.RegisterFiltersRoutes();
 using (var scope = app.Services.CreateScope())

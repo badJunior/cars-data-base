@@ -34,6 +34,19 @@ namespace CarsDateBase.CarsDateBase.Host
             });
             
         }
+
+        public static void RegisterFilteredSelledCarsRoutes(this WebApplication app)
+        {
+            var group = app.MapGroup("/filtered-selled-cars");
+            
+            group.MapPost("", async (GetFilteredCarsRequest request, ISelledCarsService service) =>
+            {var filter = request.SelectedFilter;
+                var selledCars = await service.GetFilteredSelledCars(new CarsDataBase.Application.Dtos.SelectedFilterDto(filter.Color,filter.Dealer,filter.Make,filter.Model));
+                return Results.Ok(new GetFilteredCarsResponse(selledCars));
+               
+            });
+        }
+
     }
 
 
@@ -41,5 +54,10 @@ namespace CarsDateBase.CarsDateBase.Host
     public record GetSelledCarsResponse(SelledCarDto[] SelledCars); 
 
     public record GenerateSelledCarsRequest(int CarsCount);
+
+    public record GetFilteredCarsRequest(SelectedFilterDto SelectedFilter);
     
+    public record SelectedFilterDto(string? Color, string? Dealer, string? Make, string? Model);
+
+    public record GetFilteredCarsResponse(SelledCarDto[] FilteredCars);
 }

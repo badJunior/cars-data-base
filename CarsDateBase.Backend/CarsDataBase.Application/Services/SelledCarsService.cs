@@ -40,6 +40,46 @@ namespace CarsDataBase.Application.Services
          await  _context.SaveChangesAsync();
         }
 
+        public async Task<SelledCarDto[]> GetFilteredSelledCars(SelectedFilterDto selectedFilter)
+        {
+            var selledCarsQuery = _context.SelledCars.Include(s => s.Car).Include(s => s.Dealer).AsQueryable();
+            selledCarsQuery = selectedFilter.Color != null
+                ? selledCarsQuery.Where(sc => sc.Car.Color == selectedFilter.Color)
+                : selledCarsQuery;
+            selledCarsQuery = selectedFilter.Dealer != null 
+                ? selledCarsQuery.Where(sc => sc.Dealer.Name == selectedFilter.Dealer) 
+                : selledCarsQuery;
+            selledCarsQuery = selectedFilter.Make != null
+                ? selledCarsQuery.Where(sc => sc.Car.Firm == selectedFilter.Make)
+                : selledCarsQuery;
+            selledCarsQuery = selectedFilter.Model != null
+                ? selledCarsQuery.Where(sc => sc.Car.Model == selectedFilter.Model)
+                : selledCarsQuery;
+
+            var selledCars = await selledCarsQuery.ToArrayAsync();
+            return selledCars.Select(sc => {
+                var id = sc.Id;
+                var carDto = new CarDto(
+                    sc.Car.Id,
+                    sc.Car.Firm,
+                    sc.Car.Model,
+                    sc.Car.Year,
+                    sc.Car.Power,
+                    sc.Car.Color,
+                    sc.Car.Price
+                    );
+                var dealerDto = new DealerDto(
+                    sc.Dealer.Id,
+                    sc.Dealer.Name,
+                    sc.Dealer.City,
+                    sc.Dealer.Address,
+                    sc.Dealer.Area,
+                    sc.Dealer.Rating
+                    );
+                return new SelledCarDto(id, carDto, dealerDto);
+            }).ToArray();
+        }
+
         public async Task<FiltersDataDto> GetFilters()
         {
             var makes = await _context.Cars.Select(c => c.Firm).Distinct().ToArrayAsync();

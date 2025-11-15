@@ -12,5 +12,6 @@ namespace CarsDataBase.Application.Services
         Task GenerateSelledCars(int carsCount);
         Task<SelledCarDto[]> GetSelledCars();
         Task<FiltersDataDto> GetFilters();
+        Task<SelledCarDto[]> GetFilteredSelledCars(SelectedFilterDto selectedFilter);
     }
 }
