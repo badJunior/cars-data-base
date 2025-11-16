@@ -6,6 +6,6 @@ using System.Threading.Tasks;
 
 namespace CarsDataBase.Application.Dtos
 {
-    public record SelectedFilterDto(string? Color, string? Dealer, string? Make, string? Model);
+    public record SelectedFilterDto(string? Color, string? Dealer, string? Make, string? Model, int? MinPrice, int? MaxPrice, int? MinYear, int? MaxYear);
    
 }

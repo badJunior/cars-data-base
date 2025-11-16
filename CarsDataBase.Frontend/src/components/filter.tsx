@@ -130,21 +130,49 @@ export default function Filter(props: {
         type="number"
         placeholder="Min price"
         className="bg-[#1a191e] border border-gray-700 text-gray-300 placeholder-gray-500 text-sm rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-600"
+        value={props.selectedFilter.minPrice ?? ""}
+        onChange={(e) => {
+          props.onSelectedFilterChanged({
+            ...props.selectedFilter,
+            minPrice: e.target.value != "" ? e.target.valueAsNumber : undefined,
+          });
+        }}
       />
       <input
         type="number"
         placeholder="Max price"
         className="bg-[#1a191e] border border-gray-700 text-gray-300 placeholder-gray-500 text-sm rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-600"
+        value={props.selectedFilter.maxPrice ?? ""}
+        onChange={(e) => {
+          props.onSelectedFilterChanged({
+            ...props.selectedFilter,
+            maxPrice: e.target.value != "" ? e.target.valueAsNumber : undefined,
+          });
+        }}
       />
       <input
         type="number"
         placeholder="From year"
         className="bg-[#1a191e] border border-gray-700 text-gray-300 placeholder-gray-500 text-sm rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-600"
+        value={props.selectedFilter.minYear ?? ""}
+        onChange={(e) => {
+          props.onSelectedFilterChanged({
+            ...props.selectedFilter,
+            minYear: e.target.value != "" ? e.target.valueAsNumber : undefined,
+          });
+        }}
       />
       <input
         type="number"
         placeholder="To year"
         className="bg-[#1a191e] border border-gray-700 text-gray-300 placeholder-gray-500 text-sm rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-600"
+        value={props.selectedFilter.maxYear ?? ""}
+        onChange={(e) => {
+          props.onSelectedFilterChanged({
+            ...props.selectedFilter,
+            maxYear: e.target.value != "" ? e.target.valueAsNumber : undefined,
+          });
+        }}
       />
     </div>
   );

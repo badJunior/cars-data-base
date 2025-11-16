@@ -55,6 +55,19 @@ namespace CarsDataBase.Application.Services
             selledCarsQuery = selectedFilter.Model != null
                 ? selledCarsQuery.Where(sc => sc.Car.Model == selectedFilter.Model)
                 : selledCarsQuery;
+            selledCarsQuery = selectedFilter.MinPrice != null
+                ? selledCarsQuery.Where(sc => sc.Car.Price >= selectedFilter.MinPrice)
+                : selledCarsQuery;
+            selledCarsQuery = selectedFilter.MaxPrice != null
+                ? selledCarsQuery.Where(sc => sc.Car.Price <= selectedFilter.MaxPrice)
+                : selledCarsQuery;
+            selledCarsQuery = selectedFilter.MinYear != null
+                ? selledCarsQuery.Where(sc => sc.Car.Year >= selectedFilter.MinYear)
+                : selledCarsQuery;
+           selledCarsQuery = selectedFilter.MaxYear != null
+                ? selledCarsQuery.Where(sc => sc.Car.Year <= selectedFilter.MaxYear)
+                : selledCarsQuery;
+
 
             var selledCars = await selledCarsQuery.ToArrayAsync();
             return selledCars.Select(sc => {

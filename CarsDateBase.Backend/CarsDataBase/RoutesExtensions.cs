@@ -51,7 +51,7 @@ namespace CarsDateBase.CarsDateBase.Host
             
             group.MapPost("", async (GetFilteredCarsRequest request, ISelledCarsService service) =>
             {var filter = request.SelectedFilter;
-                var selledCars = await service.GetFilteredSelledCars(new CarsDataBase.Application.Dtos.SelectedFilterDto(filter.Color,filter.Dealer,filter.Make,filter.Model));
+                var selledCars = await service.GetFilteredSelledCars(new CarsDataBase.Application.Dtos.SelectedFilterDto(filter.Color,filter.Dealer,filter.Make,filter.Model,filter.MinPrice,filter.MaxPrice,filter.MinYear,filter.MaxYear));
                 return Results.Ok(new GetFilteredCarsResponse(selledCars));
                
             });
@@ -67,7 +67,7 @@ namespace CarsDateBase.CarsDateBase.Host
 
     public record GetFilteredCarsRequest(SelectedFilterDto SelectedFilter);
     
-    public record SelectedFilterDto(string? Color, string? Dealer, string? Make, string? Model);
+    public record SelectedFilterDto(string? Color, string? Dealer, string? Make, string? Model,int? MinPrice, int?MaxPrice, int? MinYear,int? MaxYear);
 
     public record GetFilteredCarsResponse(SelledCarDto[] FilteredCars);
 
