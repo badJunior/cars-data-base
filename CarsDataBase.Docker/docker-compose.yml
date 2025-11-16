@@ -2,10 +2,12 @@ services:
   backend:
     image: cars-data-base_backend
     build:
-      context:  ..\CarsDateBase.Backend
+      context:  ../CarsDateBase.Backend
       dockerfile: CarsDataBase/Dockerfile
     ports:
       - "8080:80"
+    depends_on:
+      - postgres
 
   postgres:
     image: postgres:latest
